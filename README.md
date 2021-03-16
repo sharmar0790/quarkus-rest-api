@@ -120,7 +120,10 @@ quarkus.http.cors.methods=GET,PUT,POST # methods to be allowed in CORS
 ```
 For more info on quarkus CORS [see this](https://quarkus.io/guides/logging)
 
-## Fault tolerance Java snippets
+## Fault tolerance Java snippets and adding extension
+```
+./mvnw quarkus:add-extension -Dextensions="quarkus-smallrye-fault-tolerance"
+```
 * Fallback
 ```
 @Fallback(fallbackMethod = "fallbackMethod")
