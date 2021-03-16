@@ -1,4 +1,4 @@
-package org.quarkus.example;
+package org.quarkus.example.controller;
 
 import org.quarkus.example.model.Student;
 import org.quarkus.example.service.StudentService;
@@ -79,7 +79,7 @@ public class QuarkusExampleApplication {
                     .entity(String.format("Exception caught while removing the student for the id : %s", id))
                     .build();
         }
-        return Response.status(Response.Status.BAD_REQUEST)
+        return Response.status(Response.Status.ACCEPTED)
                 .entity(String.format("Student with %s has been removed successfully", id))
                 .build();
     }

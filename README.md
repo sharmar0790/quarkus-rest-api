@@ -10,7 +10,7 @@ mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create \
     -DprojectGroupId=org.quarkus.example \
     -DprojectArtifactId=quarkus-example \
     -DprojectVersion=1.0.0-SNAPSHOT \
-    -DclassName="org.quarkus.example.QuarkusExampleApplication" \
+    -DclassName="org.quarkus.example.controller.QuarkusExampleApplication" \
     -Dextensions="resteasy,resteasy-jackson" \
 ```
 
@@ -24,7 +24,7 @@ mvn io.quarkus:quarkus-maven-plugin:1.12.2.Final:create \
     -DprojectGroupId=org.quarkus.example \
     -DprojectArtifactId=quarkus-example \
     -DprojectVersion=1.0.0-SNAPSHOT \
-    -DclassName="org.quarkus.example.QuarkusExampleApplication" \
+    -DclassName="org.quarkus.example.controller.QuarkusExampleApplication" \
     -Dextensions="resteasy,resteasy-jackson" \
     -DbuildTool=gradle
 ```
@@ -119,6 +119,42 @@ quarkus.http.cors=true
 quarkus.http.cors.methods=GET,PUT,POST # methods to be allowed in CORS
 ```
 For more info on quarkus CORS [see this](https://quarkus.io/guides/logging)
+
+## Fault tolerance Java snippets
+* Fallback
+```
+@Fallback(fallbackMethod = "fallbackMethod")
+public String fallBack() {
+    boolean aBoolean = new Random().nextBoolean();
+    if (aBoolean) {
+        return "Returning response from normal method";
+    } else {
+        throw new RuntimeException("Calling Fallback");
+    }
+}
+
+public String fallbackMethod() {
+    return "Returning response from fallback method";
+}
+```
+Test fallback from terminal
+```
+$ watch curl  -n 0.5 http://localhost:8080/fault/fallback
+```
+
+* Retry
+```
+@Retry(maxRetries = 2, delay = 20L)
+public String retry() {
+    boolean aBoolean = new Random().nextBoolean();
+    if (aBoolean) {
+        return "Returning response from normal method";
+    } else {
+        throw new RuntimeException("Exception caught");
+    }
+}
+```
+
 
 ## Setting root path for your API
 ```
